@@ -1,0 +1,5 @@
+{
+  "name": "@pi-steps/match3", "version": "0.0.0", "private": true, "type": "module",
+  "scripts": { "dev": "vite --host 127.0.0.1 --port 5174 --strictPort", "build": "vite build", "preview": "vite preview --host 127.0.0.1 --port 4174 --strictPort" },
+  "dependencies": { "@pi-steps/core": "*", "@pi-steps/game-logic": "*", "@pi-steps/logger": "*", "@pi-steps/ui": "*", "vue": "^3.5.0" }
+}

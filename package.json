@@ -1,0 +1,29 @@
+{
+  "name": "pi-steps",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*", "games/*", "prototypes/*", "tests/acceptance"],
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "npm run dev -w @pi-steps/bootstrap",
+    "dev:match3": "npm run dev -w @pi-steps/match3",
+    "build": "npm run build:packages && npm run build -w @pi-steps/bootstrap -w @pi-steps/match3",
+    "build:packages": "tsc -p tsconfig.build.json",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:acceptance": "npm run build && npm run test -w @pi-steps/acceptance",
+    "test:boundaries": "depcruise --config .dependency-cruiser.cjs packages games prototypes",
+    "check": "npm run typecheck && npm run test:boundaries && npm run test:unit && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "dependency-cruiser": "^17.0.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.0.0",
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.0.0"
+  }
+}

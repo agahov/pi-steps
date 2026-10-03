@@ -1,0 +1,5 @@
+{
+  "name": "@pi-steps/acceptance", "version": "0.0.0", "private": true, "type": "module",
+  "scripts": { "test": "playwright test", "test:ui": "playwright test --ui" },
+  "devDependencies": { "@playwright/test": "^1.58.0" }
+}
