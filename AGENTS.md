@@ -1,10 +1,10 @@
 # Agent entry point
 
-Read [CONTEXT.md](CONTEXT.md) before planning or changing the project. Follow its references as needed for the task.
+Read [CONTEXT.md](CONTEXT.md) before planning or changing the project. Follow its references as needed.
 
+## Code rules
 
-
-# tech rules
-prefer closure vs class
-inject to import
-deep module with a compact API vs. shallow module with a wide API
+- Prefer closures over classes.
+- Inject runtime dependencies across module boundaries; import types and library primitives normally.
+- Prefer deep modules with compact public APIs.
+- Keep World creation, Archetype initialization, and System execution separate.

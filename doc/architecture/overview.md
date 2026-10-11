@@ -1,36 +1,31 @@
-# Architecture
+# World lifecycle
 
-Bootstrap communication and rendering are implemented. Match-3 remains a shell. [Stack](../tech/stack.md) · [Workspace layout](../../README.md#workspace-layout).
+## Create World
 
-Games and prototypes are independent composition roots. Shared packages do not import applications. Core and logger remain presentation-independent; Game Logic does not import UI or rendering. The dependency check enforces these import restrictions. No reusable gameplay framework is implemented.
+A **World** is isolated BitECS storage. Creation does not spawn entities, initialize presentation, or start an update loop.
 
-```mermaid
-flowchart LR
-    UI[UI module] -->|Commands| Bus[Event Bus]
-    Pixi[Pixi input] -->|Commands| Bus
-    Bus -->|Commands| Game[Game Logic module]
-    Game -->|Events| Mapping[UI event mapping]
-    Mapping -->|replaces projection| State[UI State]
-    State -->|presentation data| UI
-    Game -->|detached gameplay snapshots| Render[Render System]
-    Browser[Browser viewport] -->|CSS dimensions| Camera[Camera]
-    Camera -->|World-to-Screen mapping| Render
-    Camera -->|Screen-to-World mapping| Pixi
-    Render -->|draw calls| Display[Pixi rendering]
-```
+## Initialize Archetypes
 
-Game Logic owns gameplay state. UI State is a read model. Mutable ECS storage stays private. Composition roots inject Command delivery, Event publication, state readers, and scene mounting; library primitives remain ordinary imports. Modules use closures with compact APIs.
+An **Archetype** is an entity-template function, not an ECS storage archetype. It receives a World, creates one entity with its components and initial values, and returns the entity ID.
 
-Bootstrap Commands and Events are delivered synchronously, in subscription order. Game Logic commits before publishing an Event; Pixi reads committed state on each frame. Subscriber errors propagate to the sender.
+`initializeArchetypes` calls the supplied templates in order. Repeating a template creates another entity. Calling initialization again creates more entities; it is not a reset.
 
-## Camera
+Games own their templates and component storage. Mutable component storage must be created per game instance, not shared globally between Worlds. No concrete game templates are supplied yet.
 
-The World operates in its own coordinates, independently of the browser. The renderer owns the Camera, which maps between World Coordinates and Screen Coordinates.
+## Run Systems
 
-The initial policy fixes visible World Width at 100 units and adapts visible height to the viewport. The origin is top-left; positive x points right and positive y points down. Screen Coordinates are canvas-local CSS pixels. Both axes use the same scale; device pixel ratio affects the backing buffer only. Resizing never changes gameplay state.
+A **System** is a function that receives a World and elapsed seconds, then performs one unit of behavior. Systems access entities through their components.
 
-Camera accepts an optional empty `CameraConfig` object as an extension point. No configuration settings, panning, or zoom are supported yet.
+`runSystems` executes the supplied functions synchronously in declared order. The application owns scheduling and supplies elapsed time. There is no implicit loop, registry, or scheduler. Errors stop the current pass and propagate; prior changes are not rolled back.
 
-## Open questions
+Games own their Systems. No Match-3 Systems are implemented yet.
 
-- Which future Camera settings should be supported?
+## Presentation boundary
+
+Game Logic does not import UI or rendering. Applications compose these independent modules and inject dependencies at their boundaries. World state remains authoritative; presentation must not become a second gameplay store.
+
+**World Coordinates** belong to game space. **Screen Coordinates** are canvas-local CSS pixels. A **Camera** maps between them without changing World state.
+
+The retained Camera fixes visible World Width at 100 units, adapts visible height to the viewport, and uses uniform scale. Its origin is top-left, with x increasing rightward and y downward. Call `resize` with viewport dimensions before using it. Its optional empty `CameraConfig` is reserved for future settings.
+
+Camera mapping and a Vue application shell remain. Pixi scenes, input adapters, messaging, and the move demo have been removed. Vue and BitECS are active dependencies; Pixi remains the intended rendering technology, not an initialized subsystem.

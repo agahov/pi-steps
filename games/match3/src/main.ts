@@ -1,27 +1,16 @@
-import type { GameDefinition } from '@pi-steps/core';
-import { createGameWorld } from '@pi-steps/game-logic';
-import { createConsoleSink, createLogger } from '@pi-steps/logger';
-import { AppShell } from '@pi-steps/ui';
-import { createApp, h, shallowRef } from 'vue';
+import { createGameWorld, initializeArchetypes } from '@pi-steps/game-logic';
+import { ApplicationShell } from '@pi-steps/ui';
+import { createApp, h } from 'vue';
 
-const game: GameDefinition = { id: 'match3', title: 'Match-3' };
-const logger = createLogger({ sink: createConsoleSink(), level: 'info' });
 const world = createGameWorld();
-logger.forDomain('game').debug('ECS world created', { worldCreated: !!world });
+initializeArchetypes(world, []);
+// Match-3 has no entity templates or systems yet. No update loop is started.
 
 const app = createApp({
-  setup() {
-    const uiState = shallowRef({ status: 'Scaffold ready' });
-    logger.forDomain('app').info('Application started', { id: game.id });
-    return () => h(AppShell, {
-      title: game.title,
-      status: uiState.value.status,
-      onCheck: () => {
-        logger.forDomain('ui').info('Setup checked');
-        uiState.value = { status: 'Setup checked' };
-      },
-    });
-  },
+  render: () => h(ApplicationShell, {
+    title: 'Match-3',
+    status: 'World created. No archetypes or systems configured.',
+  }),
 });
 app.mount('#app');
 if (import.meta.hot) import.meta.hot.dispose(() => app.unmount());

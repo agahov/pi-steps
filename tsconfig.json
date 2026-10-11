@@ -13,6 +13,6 @@
     "resolveJsonModule": true,
     "types": ["node", "vite/client"]
   },
-  "include": ["packages/**/*.ts", "packages/**/*.vue", "games/**/*.ts", "prototypes/**/*.ts", "tests/acceptance/**/*.ts", "vitest.config.ts"],
+  "include": ["packages/**/*.ts", "packages/**/*.vue", "games/**/*.ts", "tests/acceptance/**/*.ts", "vitest.config.ts"],
   "exclude": ["**/node_modules", "**/dist", ".pi"]
 }

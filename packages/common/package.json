@@ -1,0 +1,4 @@
+{
+  "name": "@pi-steps/common", "version": "0.0.0", "private": true, "type": "module",
+  "exports": { "./logger": "./src/logger/index.ts" }
+}

@@ -3,12 +3,12 @@ module.exports = {
     { name: 'no-cycles', severity: 'error', from: {}, to: { circular: true } },
     { name: 'no-unresolved', severity: 'error', from: {}, to: { couldNotResolve: true } },
     {
-      name: 'shared-packages-do-not-depend-on-apps', severity: 'error',
-      from: { path: '^packages/' }, to: { path: '^(games|prototypes|tests)/' },
+      name: 'packages-do-not-depend-on-applications', severity: 'error',
+      from: { path: '^packages/' }, to: { path: '^(games|tests)/' },
     },
     {
-      name: 'core-and-logger-are-independent', severity: 'error',
-      from: { path: '^packages/(core|logger)/' },
+      name: 'common-is-independent', severity: 'error',
+      from: { path: '^packages/common/' },
       to: { path: '^packages/(game-logic|renderer|ui)/|node_modules/(vue|@vue|pixi.js|@pixi|bitecs)/' },
     },
     {
@@ -17,17 +17,14 @@ module.exports = {
       to: { path: '^packages/(ui|renderer)/|node_modules/(vue|@vue|pixi.js|@pixi)/' },
     },
     {
-      name: 'apps-are-independent', severity: 'error',
-      from: { path: '^games/' }, to: { path: '^prototypes/' },
-    },
-    {
-      name: 'prototypes-do-not-depend-on-games', severity: 'error',
-      from: { path: '^prototypes/' }, to: { path: '^games/' },
+      name: 'presentation-does-not-own-gameplay', severity: 'error',
+      from: { path: '^packages/(ui|renderer)/' },
+      to: { path: '^packages/game-logic/|node_modules/bitecs/' },
     },
   ],
   options: {
     doNotFollow: { path: 'node_modules' },
-    exclude: { path: '^(dist/|(packages|games|prototypes)/[^/]+/dist/)|\\.test\\.ts$' },
+    exclude: { path: '^(dist/|(packages|games)/[^/]+/dist/)|\\.test\\.ts$' },
     tsPreCompilationDeps: true,
     tsConfig: { fileName: 'tsconfig.json' },
     enhancedResolveOptions: { exportsFields: ['exports'], conditionNames: ['import', 'types', 'default'] },

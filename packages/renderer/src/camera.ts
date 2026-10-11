@@ -1,4 +1,9 @@
-import type { Point } from '@pi-steps/core';
+interface Position {
+  readonly x: number;
+  readonly y: number;
+}
+
+const VISIBLE_WORLD_WIDTH = 100;
 
 /** Reserved extension point. No supported settings yet. */
 export type CameraConfig = Readonly<Record<string, never>>;
@@ -11,12 +16,12 @@ export function createCamera(_config: CameraConfig = {}) {
       if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
         throw new RangeError('Viewport dimensions must be finite and positive');
       }
-      scale = width / 100;
+      scale = width / VISIBLE_WORLD_WIDTH;
     },
-    worldToScreen({ x, y }: Point): Point {
+    worldToScreen({ x, y }: Position): Position {
       return { x: x * scale, y: y * scale };
     },
-    screenToWorld({ x, y }: Point): Point {
+    screenToWorld({ x, y }: Position): Position {
       return { x: x / scale, y: y / scale };
     },
   };

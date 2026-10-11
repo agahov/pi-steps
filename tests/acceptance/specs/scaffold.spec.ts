@@ -1,16 +1,13 @@
 import { expect, test } from '@playwright/test';
 
-test('built application starts and handles a setup action', async ({ page }, testInfo) => {
+test('starts the empty Match-3 application without browser errors', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {
     if (message.type() === 'error') errors.push(message.text());
   });
-
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: String(testInfo.project.metadata.title), exact: true })).toBeVisible();
-  await expect(page.getByRole('status')).toHaveText('Scaffold ready');
-  await page.getByRole('button', { name: 'Check setup' }).click();
-  await expect(page.getByRole('status')).toHaveText('Setup checked');
+  await expect(page.getByRole('heading', { name: 'Match-3', exact: true })).toBeVisible();
+  await expect(page.getByRole('status')).toHaveText('World created. No archetypes or systems configured.');
   expect(errors).toEqual([]);
 });

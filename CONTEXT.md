@@ -1,18 +1,10 @@
-# Project context
+# Project concept
 
-Scope: the game project and its development workflow, not feature requirements or implementation details.
+Build 2D web games, starting with Match-3, while improving an agent-assisted development workflow. The agent develops the game; it is not part of gameplay.
 
-Build 2D web games, starting with Match-3. Use the project to improve an agent-assisted development workflow. Some game parts should support future games.
+Keep a small foundation: create an independent World, initialize entities from Archetype templates, then run Systems in explicit order. Camera and UI stay outside gameplay state.
 
-The game is the product. The development agent plans, implements, and reviews changes; it is not part of gameplay. Start with general game configuration, separate from agent instructions.
+No gameplay is implemented. The previous move-object demo has been removed.
 
-## Open questions
-
-- What belongs in game configuration?
-
-## References
-
-- [Shared terms](doc/UBIQUITOUS_LANGUAGE.md)
-- [Stack](doc/tech/stack.md)
-- [Architecture](doc/architecture/overview.md)
-- [Bootstrap feature](features/feature-bootstrap/spec.md)
+- [Architecture and shared terms](doc/architecture/overview.md)
+- [Structure and development commands](README.md)
